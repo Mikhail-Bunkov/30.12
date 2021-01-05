@@ -28,11 +28,104 @@ public class Main {
         while (true)
         {
             humanTurn();
-            aiTurn();
-        }
+            printMap();
+            if (isWin(DOT_X))
+            {
+                System.out.println("Побядил чиловек");
+                break;
             }
+            if(isMapFull())
+            {
+                System.out.println("Ничья");
+                break;
+            }
+            aiTurn();
+            printMap();
+            if (isWin(DOT_0))
+            {
+                System.out.println("Машины победили!!!");
+                break;
+            }
+            if(isMapFull())
+            {
+                System.out.println("Ничья");
+                break;
+            }
+        }
+    }
+    private static boolean isMapFull()
+    {
+        for(int i=0; i<SIZE; i++){
+            for(int j=0; j<SIZE; j++)
+            {
+                if (map[i][j] ==DOT_EMPTY) return false;
+            }
+        }
+        return true;
+    }
+    private static boolean isWin(char symbol){
+        int indMainD=0;
+        int indReverceD=0;
+        for (int i = 0; i<SIZE;i++)//проверка по горизонтали
+        {
+            int indX =0;
+            for (int j=0; j<SIZE; j++)
+            {
+                if (map[i][j] == symbol)
+                {
+                    indX++;
+                }
+                if(indX ==3)
+                {
+                    return true;
+                }
+            }
+        }
+        for (int j = 0; j<SIZE;j++)//проверка по вертикали
+        {
+            int indY =0;
+            for (int i=0; i<SIZE; i++)
+            {
+                if (map[i][j] == symbol)
+                {
+                    indY++;
+                }
+                if(indY ==3)
+                {
+                    return true;
+                }
+            }
+        }
+        for (int i = 0; i<SIZE;i++)//Проверка главной диагонали
+        {
+            for (int j=0; j<SIZE; j++)
+            {
+                if (i==j)
+                {
+                    if(map[i][j]==symbol)
+                    {
+                        indMainD++;
+                    }
+                }
+            }
+        }
+        if(indMainD==3)
+        {
+            return true;
+        }
 
-
+        for( int i = 0; i < SIZE ; i ++){ //Проверка неглавной(не знаю как называется) диагонали.
+            if (map[i][SIZE - i -1] == symbol)
+            {
+                indReverceD++;
+            }
+        }
+        if(indReverceD==3)
+        {
+            return true;
+        }
+        return false;
+    }
     private static void isSizeMoreThanTwo() {
         if(SIZE < 3)
         {
