@@ -17,11 +17,13 @@ public class Main {
     private static final char DOT_EMPTY = '$';
     private static final char DOT_X = 'X';
     private static final char DOT_0='0';
-    private static final char SIZE =3;
+    private static int win_DOTS;
+    private static char SIZE;
     private static char[][] map;
     private static Scanner scanner = new Scanner(System.in);
     private static Random random = new Random();
     public static void main(String[] args) {
+        setSIZE();
         isSizeMoreThanTwo();
         initMap();
         printMap();
@@ -75,7 +77,10 @@ public class Main {
                 {
                     indX++;
                 }
-                if(indX ==3)
+                else{
+                    indX =0;
+                }
+                if(indX ==win_DOTS)
                 {
                     return true;
                 }
@@ -90,7 +95,11 @@ public class Main {
                 {
                     indY++;
                 }
-                if(indY ==3)
+                else
+                {
+                    indY = 0;
+                }
+                if(indY ==win_DOTS)
                 {
                     return true;
                 }
@@ -106,10 +115,14 @@ public class Main {
                     {
                         indMainD++;
                     }
+                    else
+                    {
+                        indMainD = 0;
+                    }
                 }
             }
         }
-        if(indMainD==3)
+        if(indMainD==win_DOTS)
         {
             return true;
         }
@@ -118,9 +131,12 @@ public class Main {
             if (map[i][SIZE - i -1] == symbol)
             {
                 indReverceD++;
+            }else
+            {
+                indReverceD = 0;
             }
         }
-        if(indReverceD==3)
+        if(indReverceD==win_DOTS)
         {
             return true;
         }
@@ -138,7 +154,6 @@ public class Main {
             {
                 int x=-1;
                 int y=-1;
-
                 do {
 
                         System.out.println("Введите координаты X и Y");
@@ -194,6 +209,22 @@ public class Main {
             }
             System.out.println();
         }
+    }
+    private static void setSIZE()
+    {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите размер поля: ");
+        SIZE = (char)scanner.nextInt();
+        System.out.println("Размер поля установлен - "+SIZE);
+        if (SIZE <5)
+        {
+            win_DOTS =3;
+        }
+        if(SIZE>=5)
+        {
+            win_DOTS=4;
+        }
+
     }
 
 }
