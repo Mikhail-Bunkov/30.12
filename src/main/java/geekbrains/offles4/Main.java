@@ -17,22 +17,131 @@ public class Main {
     private static final char DOT_EMPTY = '$';
     private static final char DOT_X = 'X';
     private static final char DOT_0='0';
-    private static final char SIZE =3;
+    private static int win_DOTS;
+    private static char SIZE;
     private static char[][] map;
     private static Scanner scanner = new Scanner(System.in);
     private static Random random = new Random();
     public static void main(String[] args) {
+        setSIZE();
         isSizeMoreThanTwo();
         initMap();
         printMap();
         while (true)
         {
             humanTurn();
-            aiTurn();
-        }
+            printMap();
+            if (isWin(DOT_X))
+            {
+                System.out.println("Побядил чиловек");
+                break;
             }
+            if(isMapFull())
+            {
+                System.out.println("Ничья");
+                break;
+            }
+            aiTurn();
+            printMap();
+            if (isWin(DOT_0))
+            {
+                System.out.println("Машины победили!!!");
+                break;
+            }
+            if(isMapFull())
+            {
+                System.out.println("Ничья");
+                break;
+            }
+        }
+    }
+    private static boolean isMapFull()
+    {
+        for(int i=0; i<SIZE; i++){
+            for(int j=0; j<SIZE; j++)
+            {
+                if (map[i][j] ==DOT_EMPTY) return false;
+            }
+        }
+        return true;
+    }
+    private static boolean isWin(char symbol){
+        int indMainD=0;
+        int indReverceD=0;
+        for (int i = 0; i<SIZE;i++)//проверка по горизонтали
+        {
+            int indX =0;
+            for (int j=0; j<SIZE; j++)
+            {
+                if (map[i][j] == symbol)
+                {
+                    indX++;
+                }
+                else{
+                    indX =0;
+                }
+                if(indX ==win_DOTS)
+                {
+                    return true;
+                }
+            }
+        }
+        for (int j = 0; j<SIZE;j++)//проверка по вертикали
+        {
+            int indY =0;
+            for (int i=0; i<SIZE; i++)
+            {
+                if (map[i][j] == symbol)
+                {
+                    indY++;
+                }
+                else
+                {
+                    indY = 0;
+                }
+                if(indY ==win_DOTS)
+                {
+                    return true;
+                }
+            }
+        }
+        for (int i = 0; i<SIZE;i++)//Проверка главной диагонали
+        {
+            for (int j=0; j<SIZE; j++)
+            {
+                if (i==j)
+                {
+                    if(map[i][j]==symbol)
+                    {
+                        indMainD++;
+                    }
+                    else
+                    {
+                        indMainD = 0;
+                    }
+                }
+            }
+        }
+        if(indMainD==win_DOTS)
+        {
+            return true;
+        }
 
-
+        for( int i = 0; i < SIZE ; i ++){ //Проверка неглавной(не знаю как называется) диагонали.
+            if (map[i][SIZE - i -1] == symbol)
+            {
+                indReverceD++;
+            }else
+            {
+                indReverceD = 0;
+            }
+        }
+        if(indReverceD==win_DOTS)
+        {
+            return true;
+        }
+        return false;
+    }
     private static void isSizeMoreThanTwo() {
         if(SIZE < 3)
         {
@@ -45,7 +154,6 @@ public class Main {
             {
                 int x=-1;
                 int y=-1;
-
                 do {
 
                         System.out.println("Введите координаты X и Y");
@@ -101,6 +209,22 @@ public class Main {
             }
             System.out.println();
         }
+    }
+    private static void setSIZE()
+    {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите размер поля: ");
+        SIZE = (char)scanner.nextInt();
+        System.out.println("Размер поля установлен - "+SIZE);
+        if (SIZE <5)
+        {
+            win_DOTS =3;
+        }
+        if(SIZE>=5)
+        {
+            win_DOTS=4;
+        }
+
     }
 
 }
